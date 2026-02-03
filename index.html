@@ -50,12 +50,14 @@ button{
 </head>
 <body>
 <div class="card">
-<a href="https://discord.gg/PEpWzcjQYk" rel="noopener noreferrer" onclick="window.open(this.href,'_blank');return false;" style="display:block;text-align:center;text-decoration:none;margin-bottom:8px;cursor:pointer">
-  <div style="color:#ff2bd6;font-size:26px;font-weight:800;letter-spacing:1px">HIGH EGO</div>
+
+<a href="https://discord.gg/PEpWzcjQYk" rel="noopener noreferrer"
+   onclick="window.open(this.href,'_blank');return false;"
+   style="display:block;text-align:center;text-decoration:none;margin-bottom:8px">
+  <div style="color:#ff2bd6;font-size:26px;font-weight:800;letter-spacing:1px">
+    HIGH EGO
+  </div>
 </a>
-
-
-
 
 <label>Тип буста:</label>
 <select id="boostType">
@@ -74,10 +76,8 @@ button{
     <input type="checkbox" id="eu">
     <span class="slider"></span>
   </label>
-  <span>EU‑сервер (+15%)</span>
+  <span>EU-сервер (+15%)</span>
 </div>
-
-
 
 <button onclick="calc()">Рассчитать цену</button>
 
@@ -86,24 +86,53 @@ button{
 </div>
 
 <script>
-const transfer=[[1,500,55],[501,750,65],[751,900,75],[901,1050,85],[1051,1200,95],[1201,1350,105],[1351,1530,120],[1531,1750,145],[1751,2000,165],[2001,2100,190],[2101,2200,220],[2201,2300,240],[2301,2400,265],[2401,2500,300],[2501,2600,345],[2601,2700,385],[2701,2800,445],[2801,2900,560],[2901,3000,735],[3001,3100,1000],[3101,3200,1200],[3201,3300,1400],[3301,3400,1550],[3401,3500,1740],[3501,3600,2000],[3601,3700,2150],[3701,3800,2300],[3801,3900,2650],[3901,4000,3400]];
-const party=[[1,500,80],[501,750,90],[751,900,105],[901,1050,120],[1051,1200,130],[1201,1350,145],[1351,1530,165],[1531,1750,200],[1751,2000,245],[2001,2100,310],[2101,2200,365],[2201,2300,415],[2301,2400,440],[2401,2500,500],[2501,2600,585],[2601,2700,640],[2701,2800,745],[2801,2900,880],[2901,3000,1280]];
+const transfer = [
+  [1,500,55],[501,750,65],[751,900,75],[901,1050,85],[1051,1200,95],
+  [1201,1350,105],[1351,1530,120],[1531,1750,145],[1751,2000,165],
+  [2001,2100,190],[2101,2200,220],[2201,2300,240],[2301,2400,265],
+  [2401,2500,300],[2501,2600,345],[2601,2700,385],[2701,2800,445],
+  [2801,2900,560],[2901,3000,735],[3001,3100,1000],[3101,3200,1200],
+  [3201,3300,1400],[3301,3400,1550],[3401,3500,1740],[3501,3600,2000],
+  [3601,3700,2150],[3701,3800,2300],[3801,3900,2650],[3901,4000,3400]
+];
 
-function price(elo,type){
-  const t= type==='transfer'?transfer:party;
-  for(const r of t){if(elo>=r[0]&&elo<=r[1])return r[2];}
+const party = [
+  [1,500,80],[501,750,90],[751,900,105],[901,1050,120],[1051,1200,130],
+  [1201,1350,145],[1351,1530,165],[1531,1750,200],[1751,2000,245],
+  [2001,2100,310],[2101,2200,365],[2201,2300,415],[2301,2400,440],
+  [2401,2500,500],[2501,2600,585],[2601,2700,640],[2701,2800,745],
+  [2801,2900,880],[2901,3000,1280]
+];
+
+function price(elo, type){
+  const table = type === 'transfer' ? transfer : party;
+  for(const r of table){
+    if(elo >= r[0] && elo <= r[1]) return r[2];
+  }
   return 0;
 }
 
 function calc(){
-  const s=+start.value,e=+end.value;
-  if(!s||!e||e<=s){out.innerText='Проверьте введённые данные';return;}
-  let games=Math.ceil((e-s)/25),sum=0,elo=s;
-  for(let i=0;i<games;i++){sum+=price(elo,boostType.value);elo+=25;}
-  if(eu.checked) sum=Math.round(sum*1.15);
-  out.innerHTML=`Игр: <b>${games}</b><br>Цена: <b>${sum} ₽</b>`;
-}
-  out.innerHTML=`Игр: <b>${games}</b><br>Цена: <b>${sum} ₽</b>`;
+  const s = +start.value;
+  const e = +end.value;
+
+  if(!s || !e || e <= s){
+    out.innerText = 'Проверьте введённые данные';
+    return;
+  }
+
+  let games = Math.ceil((e - s) / 25);
+  let sum = 0;
+  let elo = s;
+
+  for(let i = 0; i < games; i++){
+    sum += price(elo, boostType.value);
+    elo += 25;
+  }
+
+  if(eu.checked) sum = Math.round(sum * 1.15);
+
+  out.innerHTML = `Игр: <b>${games}</b><br>Цена: <b>${sum} ₽</b>`;
 }
 </script>
 </body>
